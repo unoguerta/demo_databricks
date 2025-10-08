@@ -1,0 +1,65 @@
+resources:
+  jobs:
+    fr24_bronze_to_silver:
+      schedule:
+        quartz_cron_expression: 0 5 * * * ?
+        timezone_id: UTC
+      job_clusters:
+      - job_cluster_key: std_job_cluster
+        new_cluster:
+          policy_id: ${var.serverless_policy_id}
+      parameters:
+      - name: env
+        default: ${var.env}
+      - name: catalog
+        default: ${var.catalog}
+      - name: schema
+        default: bronze
+      - name: source_system
+        default: ''
+      - name: run_date_utc
+        default: ''
+      - name: batch_id
+        default: ''
+      - name: s3_bucket
+        default: /Volumes/test/bronze/fr24_bronze_vol/raw/fr24/
+      - name: s3_key
+        default: ''
+      name: fr24_bronze_to_silver
+      tasks:
+      - task_key: bronze_ingest
+        job_cluster_key: std_job_cluster
+        notebook_task:
+          notebook_path: ../jobs/notebooks/bronze_ingest.py
+          base_parameters:
+            env: ${var.env}
+            catalog: ${var.catalog}
+            schema: bronze
+            source_system: fr24
+            run_date_utc: '{{run_date_utc}}'
+        max_retries: 1
+        min_retry_interval_millis: 10000
+        timeout_seconds: 0
+      - task_key: silver_refine
+        job_cluster_key: std_job_cluster
+        depends_on:
+        - task_key: bronze_ingest
+        python_wheel_task:
+          package_name: pipeline-utils
+          entry_point: transform_generic
+          parameters:
+          - --env
+          - ${var.env}
+          - --catalog
+          - ${var.catalog}
+          - --schema
+          - silver
+          - --source-system
+          - fr24
+          - --run-date-utc
+          - '{{run_date_utc}}'
+          - --batch-id
+          - '{{task.values.bronze_ingest.batch_id}}'
+        max_retries: 1
+        min_retry_interval_millis: 10000
+        timeout_seconds: 0

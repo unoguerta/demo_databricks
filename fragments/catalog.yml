@@ -14,11 +14,7 @@ fragments:
       job_clusters:
         - job_cluster_key: std_job_cluster
           new_cluster:
-            spark_version: "14.3.x-scala2.12"
-            node_type_id: "i3.xlarge"
-            num_workers: 2
-            data_security_mode: "SINGLE_USER"
-            autotermination_minutes: 30
+            policy_id: ${var.serverless_policy_id}
 
   params:
     common_params:
@@ -30,14 +26,18 @@ fragments:
         - name: schema
           default: bronze
         - name: source_system
+          default: ""
         - name: run_date_utc
+          default: ""
         - name: batch_id
+          default: ""
         - name: s3_bucket
+          default: /Volumes/test/bronze/fr24_bronze_vol/raw/fr24/
         - name: s3_key
+          default: ""
 
   task_defaults:
     common_task:
-      max_retries: 3
+      max_retries: 1
       min_retry_interval_millis: 10000
       timeout_seconds: 0
-

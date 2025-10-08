@@ -13,7 +13,7 @@ resources:
         - task_key: bronze_ingest
           job_cluster_key: std_job_cluster
           notebook_task:
-            notebook_path: /Repos/<notebook-path>
+            notebook_path: ../jobs/notebooks/bronze_ingest.py
             base_parameters:
               env: ${var.env}
               catalog: ${var.catalog}

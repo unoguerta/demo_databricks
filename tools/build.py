@@ -45,6 +45,20 @@ def build_recipe(rec_path, cat, out_dir):
         merged = deep_merge(merged, get_fragment(cat, dotted))
     job_def = deep_merge(merged, job_def)
 
+    # Move any task default fields merged at job level down into each task
+    task_default_keys = [
+        'max_retries', 'min_retry_interval_millis', 'timeout_seconds', 'retry_on_timeout'
+    ]
+    task_defaults = {}
+    for k in task_default_keys:
+        if isinstance(job_def, dict) and k in job_def:
+            task_defaults[k] = job_def.pop(k)
+    if task_defaults and isinstance(job_def.get('tasks'), list):
+        for t in job_def['tasks']:
+            if isinstance(t, dict):
+                for k, v in task_defaults.items():
+                    t.setdefault(k, v)
+
     out = {'resources': {'jobs': {job_name: job_def}}}
     out_path = pathlib.Path(out_dir) / f"{job_name}.yml"
     out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -60,4 +74,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

@@ -1,14 +1,14 @@
 bundle:
   name: fr24
 variables:
-  env: {type: string, description: environment}
-  catalog: {type: string, description: unity catalog}
+  env: {description: environment}
+  catalog: {description: unity catalog}
+  serverless_policy_id: {description: serverless compute policy id}
 targets:
-  dev: { default: true, variables: { env: dev, catalog: test } }
+  dev: { default: true, variables: { env: dev, catalog: test, serverless_policy_id: "" } }
   stg: { variables: { env: stg, catalog: test } }
   prd: { variables: { env: prd, catalog: test } }
 
 include:
   - jobs/fr24_hourly.yml
   - jobs/fr24_bronze_to_silver.yml
-
