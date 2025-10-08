@@ -14,11 +14,12 @@ resources:
         - task_key: bronze_ingest
           job_cluster_key: std_job_cluster
           notebook_task:
-            notebook_path: ../jobs/notebooks/bronze_ingest.py
+            notebook_path: /Repos/unoguerta@gmail.com/demo_databricks/jobs/notebooks/bronze_ingest
             base_parameters:
               env: ${var.env}
               catalog: ${var.catalog}
               schema: bronze
               source_system: ${SOURCE_SYSTEM}
               run_date_utc: "{{run_date_utc}}"
-
+              s3_bucket: "{{s3_bucket}}"
+              s3_key: "{{s3_key}}"

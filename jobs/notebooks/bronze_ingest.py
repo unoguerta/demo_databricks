@@ -1,5 +1,5 @@
 
-%run /Repos/<common-notebook>
+%run /Repos/unoguerta@gmail.com/demo_databricks/common/notebook_common
 from pyspark.sql import functions as F
 from datetime import datetime, timezone
 
@@ -25,4 +25,3 @@ bronze = (df
 bronze.write.mode("append").saveAsTable(f"{CATALOG}.bronze.{params['source_system']}_raw")
 batch_id = params["batch_id"] or datetime.now(timezone.utc).strftime("%Y%m%d%H%M%S")
 dbutils.jobs.taskValues.set(key="batch_id", value=batch_id)
-
