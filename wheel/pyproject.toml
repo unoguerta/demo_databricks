@@ -1,0 +1,11 @@
+[project]
+name = "pipeline-utils"
+version = "0.1.0"
+dependencies = ["pyspark"]
+
+[tool.setuptools.packages.find]
+include = ["pipeline_utils*"]
+
+[project.scripts]
+transform_generic = "pipeline_utils.entrypoints:transform_generic"
+

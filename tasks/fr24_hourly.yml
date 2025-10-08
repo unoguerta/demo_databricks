@@ -1,0 +1,24 @@
+job_name: fr24_hourly
+variables: { SOURCE_SYSTEM: fr24 }
+use:
+  - triggers.trigger_hourly_utc
+  - clusters.job_cluster_std
+  - params.common_params
+  - task_defaults.common_task
+
+resources:
+  jobs:
+    ${JOB_NAME}:
+      name: ${JOB_NAME}
+      tasks:
+        - task_key: bronze_ingest
+          job_cluster_key: std_job_cluster
+          notebook_task:
+            notebook_path: /Repos/<notebook-path>
+            base_parameters:
+              env: ${var.env}
+              catalog: ${var.catalog}
+              schema: bronze
+              source_system: ${SOURCE_SYSTEM}
+              run_date_utc: "{{run_date_utc}}"
+

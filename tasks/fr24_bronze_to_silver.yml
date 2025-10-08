@@ -1,0 +1,36 @@
+job_name: fr24_bronze_to_silver
+variables: { SOURCE_SYSTEM: fr24 }
+use:
+  - triggers.trigger_hourly_utc
+  - clusters.job_cluster_std
+  - params.common_params
+  - task_defaults.common_task
+resources:
+  jobs:
+    ${JOB_NAME}:
+      name: ${JOB_NAME}
+      tasks:
+        - task_key: bronze_ingest
+          job_cluster_key: std_job_cluster
+          notebook_task:
+            notebook_path: /Repos/<notebook-path>
+            base_parameters:
+              env: ${var.env}
+              catalog: ${var.catalog}
+              schema: bronze
+              source_system: ${SOURCE_SYSTEM}
+              run_date_utc: "{{run_date_utc}}"
+        - task_key: silver_refine
+          job_cluster_key: std_job_cluster
+          depends_on: [{ task_key: bronze_ingest }]
+          python_wheel_task:
+            package_name: pipeline-utils
+            entry_point: transform_generic
+            parameters:
+              ["--env","${var.env}",
+               "--catalog","${var.catalog}",
+               "--schema","silver",
+               "--source-system","${SOURCE_SYSTEM}",
+               "--run-date-utc","{{run_date_utc}}",
+               "--batch-id","{{task.values.bronze_ingest.batch_id}}"]
+

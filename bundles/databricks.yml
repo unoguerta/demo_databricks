@@ -1,0 +1,14 @@
+bundle:
+  name: fr24
+variables:
+  env: {type: string, description: environment}
+  catalog: {type: string, description: unity catalog}
+targets:
+  dev: { default: true, variables: { env: dev, catalog: test } }
+  stg: { variables: { env: stg, catalog: test } }
+  prd: { variables: { env: prd, catalog: test } }
+
+include:
+  - jobs/fr24_hourly.yml
+  - jobs/fr24_bronze_to_silver.yml
+

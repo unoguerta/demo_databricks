@@ -1,0 +1,43 @@
+fragments:
+  triggers:
+    trigger_hourly_utc:
+      schedule:
+        quartz_cron_expression: "0 5 * * * ?"
+        timezone_id: "UTC"
+    trigger_manual:
+      schedule: null
+    trigger_webhook:
+      schedule: null
+
+  clusters:
+    job_cluster_std:
+      job_clusters:
+        - job_cluster_key: std_job_cluster
+          new_cluster:
+            spark_version: "14.3.x-scala2.12"
+            node_type_id: "i3.xlarge"
+            num_workers: 2
+            data_security_mode: "SINGLE_USER"
+            autotermination_minutes: 30
+
+  params:
+    common_params:
+      parameters:
+        - name: env
+          default: ${var.env}
+        - name: catalog
+          default: ${var.catalog}
+        - name: schema
+          default: bronze
+        - name: source_system
+        - name: run_date_utc
+        - name: batch_id
+        - name: s3_bucket
+        - name: s3_key
+
+  task_defaults:
+    common_task:
+      max_retries: 3
+      min_retry_interval_millis: 10000
+      timeout_seconds: 0
+
