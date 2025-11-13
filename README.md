@@ -17,8 +17,6 @@ tools/ # Helper scripts (validation, deployment, packaging)
 wheel/ # Python wheel source (shared business logic)
 Makefile # Automation commands (build, deploy, validate)
 
-yaml
-Copy code
 
 ---
 
@@ -55,26 +53,21 @@ Built via the Makefile and shipped with every deployment.
 ## 🧩 Deployment (DAB)
 
 Validate:
-```sh
 databricks bundle validate
+
 Deploy:
-
-sh
-Copy code
 databricks bundle deploy --target dev
-Run pipelines:
 
-sh
-Copy code
+Run pipelines:
 databricks bundle run fr24_bronze_to_silver
+
 🔨 Makefile Commands
-sh
-Copy code
 make build        # Build wheel + lint + format
 make validate     # Validate DAB config
 make deploy-dev   # Deploy to dev
 make deploy-stg   # Deploy to staging
 make deploy-prod  # Deploy to production
+
 📦 Key Features
 Bronze → Silver ingestion with incremental "build-missing" logic
 
