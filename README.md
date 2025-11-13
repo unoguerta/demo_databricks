@@ -1,4 +1,4 @@
-# CAAS IEP – Databricks Asset Bundles (DAB)
+# Databricks Asset Bundles (DAB)
 
 This repository contains the Databricks Asset Bundles (DAB) framework used for the CAAS IEP project.  
 It defines all data pipelines, tasks, notebooks, reusable YAML fragments, and the shared Python wheel that powers the ingestion and transformation layers across Bronze → Silver → Gold.
