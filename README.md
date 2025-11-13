@@ -8,13 +8,21 @@ It defines all data pipelines, tasks, notebooks, reusable YAML fragments, and th
 ## 📁 Repository Structure
 
 bundles/ # DAB bundle definitions for dev/stg/prod
+
 common/ # Shared Python utilities and config fragments
+
 fragments/ # Reusable YAML snippets (clusters, secrets, catalogs)
+
 jobs/notebooks/ # All Databricks notebooks used by pipelines
+
 tasks/ # Job/task definitions referenced by bundles
+
 tests/ # Unit tests for merge logic, utils, parsing
+
 tools/ # Helper scripts (validation, deployment, packaging)
+
 wheel/ # Python wheel source (shared business logic)
+
 Makefile # Automation commands (build, deploy, validate)
 
 
